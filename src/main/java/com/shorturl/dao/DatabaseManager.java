@@ -30,8 +30,8 @@ public class DatabaseManager
         }
         catch(SQLException e)
         {
-            System.out.println("DataBase Error"+e.getMessage());
-            return 0;
+            System.out.println("DataBase Error from saveOriginalUrlGetId --> "+e.getMessage());
+            return -1;
         }
     }
 
@@ -60,21 +60,29 @@ public class DatabaseManager
         try
         {
             Connection con=DBUtil.getConnection();
-            PreparedStatement pst=con.prepareStatement("SELECT originalUrl from urlcodes where id=?");
+            PreparedStatement pst=con.prepareStatement("SELECT originalUrl,visitedCount from urlcodes where id=?");
             pst.setInt(1, dbId);
             ResultSet rs=pst.executeQuery();
             if (rs.next())
             {
                 originalUrl=rs.getString("originalUrl");
+                int visitedCount=rs.getInt("visitedCount")+1;
+                PreparedStatement pst2=con.prepareStatement("UPDATE urlcodes SET visitedCount=? where id=?");
+                pst2.setInt(1, visitedCount);
+                pst2.setInt(2, dbId);
+                pst2.execute();
+                System.out.println("visitedCount increased --> "+visitedCount);
+                pst2.close();
             }
             else
             {
                 originalUrl="URL not Found";
             }
+            con.close();
         }
         catch(SQLException e)
         {
-            System.out.println("DataBase Error"+e.getMessage());
+            System.out.println("DataBase Error from getOriginalUrl "+e.getMessage());
         }
         return originalUrl;
     }
