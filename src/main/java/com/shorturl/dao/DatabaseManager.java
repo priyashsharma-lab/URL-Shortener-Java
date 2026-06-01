@@ -86,4 +86,23 @@ public class DatabaseManager
         }
         return originalUrl;
     }
+    public boolean deleteUrlFromDatabase(String originalUrl)
+    {
+        try
+        {
+            Connection con=DBUtil.getConnection();
+            PreparedStatement pst=con.prepareStatement("DELETE FROM urlcodes where originalUrl=?");
+            pst.setString(1,originalUrl); 
+            pst.execute(); 
+            System.out.println("Deleted successfully");   
+            pst.close();
+            con.close();  
+            return true;
+        }
+        catch(SQLException e)
+        {
+            System.out.println("Database Error form deleteUrlFromDatabase--> "+e.getMessage());
+            return false;
+        }
+    }
 }

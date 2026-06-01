@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.shorturl.AppTest" time="0.009" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.shorturl.AppTest" time="0.018" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="22"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="IN"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-22\bin"/>
-    <property name="sun.java.command" value="C:\Users\priya\AppData\Local\Temp\surefire4566298788210422979\surefirebooter-20260602024230349_3.jar C:\Users\priya\AppData\Local\Temp\surefire4566298788210422979 2026-06-02T02-42-30_229-jvmRun1 surefire-20260602024230349_1tmp surefire_0-20260602024230349_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\priya\AppData\Local\Temp\surefire10369446292368307288\surefirebooter-20260602034300992_3.jar C:\Users\priya\AppData\Local\Temp\surefire10369446292368307288 2026-06-02T03-43-00_859-jvmRun1 surefire-20260602034300992_1tmp surefire_0-20260602034300992_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\priya\Desktop\Java Projects\shorturl\target\test-classes;C:\Users\priya\Desktop\Java Projects\shorturl\target\classes;C:\Users\priya\.m2\repository\junit\junit\3.8.1\junit-3.8.1.jar;C:\Users\priya\.m2\repository\com\mysql\mysql-connector-j\9.7.0\mysql-connector-j-9.7.0.jar;C:\Users\priya\.m2\repository\com\google\protobuf\protobuf-java\4.31.1\protobuf-java-4.31.1.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\priya\AppData\Local\Temp\surefire4566298788210422979\surefirebooter-20260602024230349_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\priya\AppData\Local\Temp\surefire10369446292368307288\surefirebooter-20260602034300992_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="22.0.1+8-16"/>
@@ -58,5 +58,5 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="66.0"/>
   </properties>
-  <testcase name="testApp" classname="com.shorturl.AppTest" time="0.0"/>
+  <testcase name="testApp" classname="com.shorturl.AppTest" time="0.003"/>
 </testsuite>
