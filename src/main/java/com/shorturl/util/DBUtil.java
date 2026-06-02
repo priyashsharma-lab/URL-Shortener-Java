@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 public class DBUtil
 {
@@ -56,5 +57,67 @@ public class DBUtil
             System.out.println("Database Error from getEncodedUrl in DBUtil--> "+e.getMessage());
             return "Error";
         }
+    }
+    
+    public static LocalDateTime getCreatedAt(int dbId)
+    {
+        try
+        {
+            LocalDateTime createdAt=null;
+            Connection con=DBUtil.getConnection();
+            PreparedStatement pst=con.prepareStatement("Select createdAt from urlcodes where id=?");
+            pst.setInt(1,dbId);
+            ResultSet rs=pst.executeQuery();
+            if (rs.next())
+            {
+                createdAt=rs.getTimestamp("createdAt").toLocalDateTime();
+            }
+            pst.close();
+            con.close();
+            return createdAt;
+        }
+        catch(SQLException e)
+        {
+            System.out.println("Database Error from getCreatedAt in DBUtil--> "+e.getMessage());
+            return null;
+        }
+    }
+    public static LocalDateTime getExpireDate(int dbId)
+    {
+        LocalDateTime expireDate=null;
+        try
+        {
+            Connection con=DBUtil.getConnection();
+            PreparedStatement pst=con.prepareStatement("SELECT expireDate from urlcodes where id=?");
+            pst.setInt(1,dbId);
+            ResultSet rs=pst.executeQuery();
+            if (rs.next())
+            {
+                if (rs.getTimestamp("expireDate")==null)
+                {
+                    return expireDate;
+                }
+                expireDate=rs.getTimestamp("expireDate").toLocalDateTime();
+            }
+            pst.close();
+            con.close();
+            return expireDate;
+        }
+        catch(SQLException e)
+        {
+            System.out.println("Database Error from getExpiredAt in DBUtil--> "+e.getMessage());
+            return null;
+        }
+    }
+    public static boolean isUrlExpired(int dbId)
+    {
+        LocalDateTime expireDate=DBUtil.getExpireDate(dbId);
+        if (expireDate==null)
+        {
+            return false;
+        }
+        LocalDateTime now=LocalDateTime.now();
+        boolean isExpired=now.isAfter(expireDate);
+        return isExpired;
     }
 }

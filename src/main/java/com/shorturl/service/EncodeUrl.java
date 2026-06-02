@@ -8,10 +8,12 @@ public class EncodeUrl
 {
     private final String originalUrl;
     private String encodedUrl;
-    public EncodeUrl(String originalUrl) 
+    private String expireTime;
+    public EncodeUrl(String originalUrl,String expireTime) 
     {
         this.originalUrl=originalUrl;
         encodedUrl="";
+        this.expireTime=expireTime;
     }
     public String generateEncodedUrl()
     {
@@ -50,6 +52,7 @@ public class EncodeUrl
         encodedUrl+="-";
         encodedUrl+=dbId.toString();
         dbMgr.saveEncodedUrl(encodedUrl, dbId);
+        dbMgr.setExpireDate(dbId,expireTime);
         return encodedUrl;
     }
         

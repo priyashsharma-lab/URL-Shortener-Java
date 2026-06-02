@@ -1,6 +1,7 @@
 package com.shorturl.service;
 
 import com.shorturl.dao.DatabaseManager;
+import com.shorturl.util.DBUtil;
 
 public class DecodeUrl 
 {
@@ -14,8 +15,21 @@ public class DecodeUrl
     public String getOriginalUrl()
     {
         DatabaseManager dbMgr=new DatabaseManager();
-        int dbId=Integer.parseInt(encodedUrl.split("-")[1]);
+        int dbId;
+        try
+        {
+            dbId=Integer.parseInt(encodedUrl.split("-")[1]);
+        }
+        catch(ArrayIndexOutOfBoundsException e)
+        {
+            return "Enter valid encoded URL";
+        }
         originalUrl=dbMgr.getOriginalUrl(dbId);
+        if (DBUtil.isUrlExpired(dbId))
+        {
+            dbMgr.deleteUrlFromDatabase(originalUrl);
+            return "URL Expired";
+        }
         return originalUrl;
     }
 }

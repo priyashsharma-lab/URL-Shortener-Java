@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import com.shorturl.util.DBUtil;
 
@@ -103,6 +105,30 @@ public class DatabaseManager
         {
             System.out.println("Database Error form deleteUrlFromDatabase--> "+e.getMessage());
             return false;
+        }
+    }
+    public void setExpireDate(int dbId,String expireTime)
+    {
+        if (!expireTime.equals("Never"))
+        {
+            LocalDateTime expireDate;
+            LocalDateTime createdAt=DBUtil.getCreatedAt(dbId);
+            Integer expireDays=Integer.valueOf(expireTime.split("-")[0]);
+            expireDate=createdAt.plusDays(expireDays);
+            try
+            {
+                Connection con=DBUtil.getConnection();
+                PreparedStatement pst=con.prepareStatement("UPDATE urlcodes SET expireDate=? WHERE id=?");
+                pst.setTimestamp(1, Timestamp.valueOf(expireDate));
+                pst.setInt(2,dbId);
+                pst.execute();
+                pst.close();
+                con.close();
+            }
+            catch(SQLException e)
+            {
+                System.out.println("Database Error form setExpiryDate--> "+e.getMessage());
+            }
         }
     }
 }

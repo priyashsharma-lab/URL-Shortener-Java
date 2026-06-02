@@ -9,6 +9,7 @@ import java.awt.datatransfer.StringSelection;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -59,8 +60,12 @@ public class Gui
         JButton encodePageButton=new JButton("Encode");
         JButton decodePageButton=new JButton("Decode");
 
+        String expireListOptions[]={"Select Expire Time","Never","1-day","3-days","7-days"};
+        JList<String> expireList=new JList<>(expireListOptions);
+
         shortPanel.add(shortLabel);
         shortPanel.add(shortInput);
+        shortPanel.add(expireList);
         shortPanel.add(shortButton);
         shortPanel.add(shortOutputLabel);
 
@@ -89,7 +94,12 @@ public class Gui
 
         shortButton.addActionListener(e->{
             String originalUrl=shortInput.getText().trim();
-            EncodeUrl encUrl=new EncodeUrl(originalUrl);
+            String expireTime=expireList.getSelectedValue();
+            if (expireTime==null || expireTime.equals("Select Expire Time"))
+            {
+                expireTime=expireListOptions[1];
+            }
+            EncodeUrl encUrl=new EncodeUrl(originalUrl,expireTime);
             String encodedUrl=encUrl.generateEncodedUrl();
             shortOutputLabel.setText(encodedUrl);
         });
