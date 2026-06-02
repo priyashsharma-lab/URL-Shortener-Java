@@ -8,6 +8,7 @@ import java.awt.datatransfer.StringSelection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,6 +24,8 @@ import com.shorturl.dao.AnalyticsManager;
 import com.shorturl.service.DecodeUrl;
 import com.shorturl.service.DeleteUrl;
 import com.shorturl.service.EncodeUrl;
+import com.shorturl.util.DBUtil;
+import com.shorturl.util.QRCodeGenerator;
 
 public class Gui 
 {
@@ -67,6 +70,7 @@ public class Gui
         JButton encodePageButton=new JButton("Encode");
         JButton decodePageButton=new JButton("Decode");
         JButton analyticsButton=new JButton("Analytics");
+        JButton qrButton =new JButton("Generate QR");
 
         String expireListOptions[]={"Select Expire Time","Never","1-day","3-days","7-days"};
         JList<String> expireList=new JList<>(expireListOptions);
@@ -76,6 +80,7 @@ public class Gui
         shortPanel.add(expireList);
         shortPanel.add(shortButton);
         shortPanel.add(shortOutputLabel);
+        shortPanel.add(qrButton);
 
         decodePanel.add(decodeLabel);
         decodePanel.add(decodeInput);
@@ -124,6 +129,27 @@ public class Gui
             DeleteUrl delUrl=new DeleteUrl(originalUrl);
             String deletionMsg=delUrl.deleteUrl();
             deleteOutputLabel.setText(deletionMsg);
+        });
+        qrButton.addActionListener(e->{
+            String shortUrl =DBUtil.getEncodedUrl(shortInput.getText());
+            if (shortUrl.equals(""))
+            {
+                JOptionPane.showMessageDialog(null,"Enter a URL to encode first");
+                return;
+            }
+            String qrFile =QRCodeGenerator.generateQRCode(shortUrl);
+
+            if(qrFile == null)
+            {
+                JOptionPane.showMessageDialog(null,"QR Generation Failed");
+                return;
+            }
+
+            ImageIcon icon =new ImageIcon(qrFile);
+
+            JLabel imageLabel =new JLabel(icon);
+
+            JOptionPane.showMessageDialog(null, imageLabel, "QR Code",JOptionPane.PLAIN_MESSAGE);
         });
 
         //Copy Feature code

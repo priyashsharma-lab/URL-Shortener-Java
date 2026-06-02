@@ -1,5 +1,6 @@
 com\shorturl\service\DeleteUrl.class
 com\shorturl\dao\DatabaseManager.class
+com\shorturl\util\QRCodeGenerator.class
 com\shorturl\service\EncodeUrl.class
 com\shorturl\service\DecodeUrl.class
 com\shorturl\ui\Gui.class
