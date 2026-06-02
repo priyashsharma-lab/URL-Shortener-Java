@@ -10,6 +10,8 @@ public class DecodeUrl
     public DecodeUrl(String encodedUrl)
     {
         this.encodedUrl=encodedUrl;
+        this.encodedUrl=encodedUrl.split("/")[3];
+        System.out.println("EncodedUrl from DecodeUrl-->"+this.encodedUrl);
         originalUrl="";
     }    
     public String getOriginalUrl()

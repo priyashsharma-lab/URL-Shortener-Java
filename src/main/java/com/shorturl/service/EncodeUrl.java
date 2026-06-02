@@ -12,7 +12,7 @@ public class EncodeUrl
     public EncodeUrl(String originalUrl,String expireTime) 
     {
         this.originalUrl=originalUrl;
-        encodedUrl="";
+        encodedUrl="https://short.ly/";
         this.expireTime=expireTime;
     }
     public String generateEncodedUrl()
