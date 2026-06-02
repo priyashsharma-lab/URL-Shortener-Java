@@ -4,5 +4,6 @@ com\shorturl\service\EncodeUrl.class
 com\shorturl\service\DecodeUrl.class
 com\shorturl\ui\Gui.class
 com\shorturl\app\Main.class
+com\shorturl\dao\AnalyticsManager.class
 com\shorturl\util\DBUtil.class
 com\shorturl\util\UrlInfo.class

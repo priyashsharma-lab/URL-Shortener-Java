@@ -5,6 +5,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,8 +14,12 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
+import com.shorturl.dao.AnalyticsManager;
 import com.shorturl.service.DecodeUrl;
 import com.shorturl.service.DeleteUrl;
 import com.shorturl.service.EncodeUrl;
@@ -40,6 +46,7 @@ public class Gui
         JPanel deletePanel=new JPanel(new GridLayout(2,3));
         JPanel homePanel=new JPanel();
         JPanel navigationBarPanel=new JPanel(new FlowLayout(1,10,10));
+        JPanel analyticsPanel=new JPanel();
 
         JLabel shortLabel=new JLabel("Enter URL to shorten: ");
         JLabel decodeLabel=new JLabel("Enter shortURL to decode: ");
@@ -59,6 +66,7 @@ public class Gui
         JButton deletePageButton=new JButton("Delete");
         JButton encodePageButton=new JButton("Encode");
         JButton decodePageButton=new JButton("Decode");
+        JButton analyticsButton=new JButton("Analytics");
 
         String expireListOptions[]={"Select Expire Time","Never","1-day","3-days","7-days"};
         JList<String> expireList=new JList<>(expireListOptions);
@@ -83,11 +91,13 @@ public class Gui
         navigationBarPanel.add(encodePageButton);
         navigationBarPanel.add(decodePageButton);
         navigationBarPanel.add(deletePageButton);
+        navigationBarPanel.add(analyticsButton);
 
         mainPanel.add(homePanel,"HOME");
         mainPanel.add(shortPanel,"ENCODE");
         mainPanel.add(decodePanel,"DECODE");
         mainPanel.add(deletePanel,"DELETE");
+        mainPanel.add(analyticsPanel,"ANALYTICS");
 
         mainFrame.add(navigationBarPanel);
         mainFrame.add(mainPanel);
@@ -148,6 +158,39 @@ public class Gui
         });
         deletePageButton.addActionListener(e->{
             cardLayout.show(mainPanel, "DELETE");
+        });
+        analyticsButton.addActionListener(e->{
+            analyticsPanel.removeAll();
+            DefaultTableModel model=new DefaultTableModel();
+            model.addColumn("Features");
+            model.addColumn("Values");
+            model.addRow(new Object[]{"Total URLs",AnalyticsManager.getTotalUrls()} );
+            model.addRow(new Object[]{"Active URLs",AnalyticsManager.getActiveUrls()} );
+            model.addRow(new Object[]{"Expired URLs",AnalyticsManager.getExpiredUrls()} );
+            model.addRow(new Object[]{"Total Visits",AnalyticsManager.getTotalVisits()} );
+            model.addRow(new Object[]{"Average Visits",AnalyticsManager.getAverageVisits()} );
+            String mostViewedUrl[]=AnalyticsManager.getMostViewedUrl();
+            String mostViewedUrlString=mostViewedUrl[0]+"--> "+mostViewedUrl[1];
+            model.addRow(new Object[]{"Most Viewed URL",mostViewedUrlString});
+            JTable analyticsTable=new JTable(model);
+            JScrollPane scrollPane=new JScrollPane(analyticsTable);
+            analyticsPanel.add(scrollPane);
+            JLabel top5Label=new JLabel("Top 5 URLs:");
+            analyticsPanel.add(top5Label);
+            DefaultTableModel top5Model=new DefaultTableModel();
+            top5Model.addColumn("Short URL");
+            top5Model.addColumn("Visited Count");
+            LinkedHashMap<String,Integer> top5Urls=AnalyticsManager.getTop5Urls();
+            for (HashMap.Entry<String,Integer> entry:top5Urls.entrySet())
+            {   
+                top5Model.addRow(new Object[]{entry.getKey(),entry.getValue()});
+            }
+            JTable top5Table=new JTable(top5Model);
+            JScrollPane top5ScrollPane=new JScrollPane(top5Table);
+            analyticsPanel.add(top5ScrollPane);
+            analyticsPanel.revalidate();
+            analyticsPanel.repaint();
+            cardLayout.show(mainPanel,"ANALYTICS");
         });
         mainFrame.setVisible(true);
     }   
